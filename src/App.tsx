@@ -1,5 +1,7 @@
 import Header from './components/Header';
 import Hero from './components/Hero';
+import Sizzle from './components/Sizzle';
+import IngredientAssembly from './components/IngredientAssembly';
 import About from './components/About';
 import MenuSection from './components/MenuSection';
 import Gallery from './components/Gallery';
@@ -12,6 +14,8 @@ export default function App() {
       <Header />
       <main>
         <Hero />
+        <Sizzle />
+        <IngredientAssembly />
         <About />
         <MenuSection />
         <Gallery />

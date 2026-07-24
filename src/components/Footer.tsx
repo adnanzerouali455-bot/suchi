@@ -20,17 +20,20 @@ export default function Footer() {
         味
       </div>
 
+      {/* Flickering lantern */}
+      <div className="pointer-events-none absolute right-[20%] top-10 h-24 w-24 rounded-full bg-shu-500/10 blur-3xl animate-lantern-flicker" />
+
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-kin-400/60 bg-sumi-900">
-                <span className="font-serif text-xl font-semibold text-kin-300">寿</span>
+              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-shu-500/50 bg-sumi-900">
+                <span className="font-serif text-xl font-semibold text-shu-400">寿</span>
               </div>
               <div>
-                <p className="font-serif text-lg text-sumi-50">Suchi For You</p>
-                <p className="text-[10px] uppercase tracking-[0.3em] text-kin-300/80">Cuisine Asiatique</p>
+                <p className="font-script text-xl font-bold text-sumi-50">Sushi For You</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-shu-400/80">Izakaya Japonaise</p>
               </div>
             </div>
             <p className="mt-5 text-sm font-light leading-relaxed text-sumi-400">
@@ -43,7 +46,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-sumi-700/50 text-sumi-300 transition-all hover:border-kin-400/50 hover:text-kin-300"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-sumi-700/50 text-sumi-300 transition-all hover:border-shu-400/50 hover:text-shu-400"
               >
                 <Instagram size={18} />
               </a>
@@ -52,7 +55,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-sumi-700/50 text-sumi-300 transition-all hover:border-kin-400/50 hover:text-kin-300"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-sumi-700/50 text-sumi-300 transition-all hover:border-shu-400/50 hover:text-shu-400"
               >
                 <Facebook size={18} />
               </a>
@@ -61,26 +64,26 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="mb-5 text-xs uppercase tracking-[0.3em] text-kin-300/80">Contact</h4>
+            <h4 className="mb-5 text-xs uppercase tracking-[0.3em] text-shu-400/80">Contact</h4>
             <ul className="space-y-4 text-sm font-light text-sumi-300">
               <li className="flex items-start gap-3">
-                <MapPin size={16} className="mt-0.5 shrink-0 text-kin-400" />
+                <MapPin size={16} className="mt-0.5 shrink-0 text-shu-500" />
                 <span>Avenue Mohammed V, Berkane 35000, Maroc</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={16} className="shrink-0 text-kin-400" />
-                <a href="tel:+212600000000" className="transition-colors hover:text-kin-300">+212 6 00 00 00 00</a>
+                <Phone size={16} className="shrink-0 text-shu-500" />
+                <a href="tel:+212600000000" className="transition-colors hover:text-shu-400">+212 6 00 00 00 00</a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={16} className="shrink-0 text-kin-400" />
-                <a href="mailto:contact@suchiforyou.ma" className="transition-colors hover:text-kin-300">contact@suchiforyou.ma</a>
+                <Mail size={16} className="shrink-0 text-shu-500" />
+                <a href="mailto:contact@sushiforyou.ma" className="transition-colors hover:text-shu-400">contact@sushiforyou.ma</a>
               </li>
             </ul>
           </div>
 
           {/* Hours */}
           <div>
-            <h4 className="mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-kin-300/80">
+            <h4 className="mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-shu-400/80">
               <Clock size={12} /> Horaires
             </h4>
             <ul className="space-y-3 text-sm font-light text-sumi-300">
@@ -95,12 +98,12 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h4 className="mb-5 text-xs uppercase tracking-[0.3em] text-kin-300/80">Liens rapides</h4>
+            <h4 className="mb-5 text-xs uppercase tracking-[0.3em] text-shu-400/80">Liens rapides</h4>
             <ul className="space-y-3 text-sm font-light text-sumi-300">
               {quickLinks.map((l) => (
                 <li key={l.href}>
-                  <a href={l.href} className="group inline-flex items-center gap-2 transition-colors hover:text-kin-300">
-                    <span className="h-px w-0 bg-kin-400 transition-all duration-300 group-hover:w-4" />
+                  <a href={l.href} className="group inline-flex items-center gap-2 transition-colors hover:text-shu-400">
+                    <span className="h-px w-0 bg-shu-500 transition-all duration-300 group-hover:w-4" />
                     {l.label}
                   </a>
                 </li>
@@ -120,7 +123,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-sumi-800/50 pt-6 sm:flex-row">
           <p className="text-xs font-light text-sumi-500">
-            © {new Date().getFullYear()} Suchi For You. Tous droits réservés.
+            © {new Date().getFullYear()} Sushi For You. Tous droits réservés.
           </p>
           <p className="text-xs font-light text-sumi-500">
             Fait avec passion à Berkane, Maroc

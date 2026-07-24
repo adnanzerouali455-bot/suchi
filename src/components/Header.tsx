@@ -9,6 +9,37 @@ const links = [
   { href: '#contact', label: 'Contact' },
 ];
 
+function Logo() {
+  return (
+    <div className="flex items-center gap-3">
+      {/* Chopsticks holding a sushi roll logo */}
+      <div className="relative flex h-11 w-11 items-center justify-center rounded-full border border-shu-500/50 bg-sumi-900 overflow-hidden">
+        {/* Sushi roll (cross-section) */}
+        <div className="relative h-6 w-6 rounded-full bg-gradient-to-br from-sumi-100 to-sumi-200 shadow-inner">
+          {/* Nori ring */}
+          <div className="absolute inset-0 rounded-full ring-2 ring-green-900" />
+          {/* Salmon center */}
+          <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-shu-400 to-shu-600">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/40 to-transparent" />
+          </div>
+        </div>
+        {/* Chopstick 1 */}
+        <div className="absolute h-0.5 w-7 rounded-full bg-gradient-to-r from-kin-600 to-kin-300 rotate-[-25deg] origin-center" style={{ top: '12px', left: '4px' }} />
+        {/* Chopstick 2 */}
+        <div className="absolute h-0.5 w-7 rounded-full bg-gradient-to-r from-kin-600 to-kin-300 rotate-[-20deg] origin-center" style={{ top: '22px', left: '4px' }} />
+      </div>
+      <div className="flex flex-col leading-none">
+        <span className="font-script text-xl font-bold text-sumi-50">
+          Sushi For You
+        </span>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-shu-400/80">
+          Izakaya Japonaise
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -29,20 +60,7 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
-        {/* Logo */}
-        <a href="#accueil" className="group flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-kin-400/60 bg-sumi-900 transition-transform duration-500 group-hover:rotate-12">
-            <span className="font-serif text-xl font-semibold text-kin-300">寿</span>
-          </div>
-          <div className="flex flex-col leading-none">
-            <span className="font-serif text-lg font-medium tracking-wide text-sumi-50">
-              Suchi For You
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-kin-300/80">
-              Cuisine Asiatique
-            </span>
-          </div>
-        </a>
+        <a href="#accueil"><Logo /></a>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 lg:flex">
@@ -50,10 +68,10 @@ export default function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="group relative text-sm font-light tracking-wide text-sumi-100 transition-colors hover:text-kin-300"
+              className="group relative text-sm font-light tracking-wide text-sumi-100 transition-colors hover:text-shu-400"
             >
               {l.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-kin-400 transition-all duration-300 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-shu-500 transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -61,7 +79,7 @@ export default function Header() {
         <div className="hidden items-center gap-3 lg:flex">
           <a
             href="#reservation"
-            className="rounded-full border border-kin-400/50 px-5 py-2 text-sm font-light tracking-wide text-kin-200 transition-all hover:border-kin-300 hover:bg-kin-400/10"
+            className="rounded-full border border-shu-400/50 px-5 py-2 text-sm font-light tracking-wide text-shu-200 transition-all hover:border-shu-300 hover:bg-shu-500/10"
           >
             Réserver
           </a>
@@ -69,7 +87,7 @@ export default function Header() {
             href="https://wa.me/212600000000"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-full bg-shu-600 px-5 py-2 text-sm font-medium text-white transition-all hover:bg-shu-500"
+            className="flex items-center gap-2 rounded-full bg-green-600 px-5 py-2 text-sm font-medium text-white transition-all hover:bg-green-500"
           >
             <Phone size={15} />
             Commander
@@ -98,7 +116,7 @@ export default function Header() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3 text-sm font-light text-sumi-100 transition-colors hover:bg-sumi-800 hover:text-kin-300"
+              className="rounded-lg px-4 py-3 text-sm font-light text-sumi-100 transition-colors hover:bg-sumi-800 hover:text-shu-400"
             >
               {l.label}
             </a>
@@ -106,7 +124,7 @@ export default function Header() {
           <a
             href="#reservation"
             onClick={() => setOpen(false)}
-            className="mt-2 rounded-lg bg-shu-600 px-4 py-3 text-center text-sm font-medium text-white"
+            className="mt-2 rounded-lg bg-shu-500 px-4 py-3 text-center text-sm font-medium text-white"
           >
             Réserver une table
           </a>

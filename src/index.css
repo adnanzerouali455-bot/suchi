@@ -34,7 +34,7 @@
 }
 
 ::selection {
-  background-color: #c8312a;
+  background-color: #E8622C;
   color: #fdfbf3;
 }
 
@@ -42,12 +42,54 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d0c0a;
+  background: #070605;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3e3830;
+  background: #2a2620;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c8312a;
+  background: #E8622C;
+}
+
+/* 3D perspective utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Drag cursor for hero sushi */
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-grabbing {
+  cursor: grabbing;
+}
+
+/* Conveyor belt shimmer */
+@keyframes conveyorShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.conveyor-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(232,98,44,0.15), transparent);
+  background-size: 200% 100%;
+  animation: conveyorShimmer 3s linear infinite;
+}
+
+/* Soy ripple */
+@keyframes soyRipple {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.soy-ripple {
+  animation: soyRipple 1.5s ease-out forwards;
 }
