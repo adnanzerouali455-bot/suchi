@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useI18n } from '../i18n/I18nContext';
 
-// Pexels sushi photo IDs for orbiting pieces
 const orbitPieces = [
-  { id: 'o1', src: 'https://images.pexels.com/photos/4725627/pexels-photo-4725627.jpeg?auto=compress&cs=tinysrgb&w=200', label: 'Nigiri saumon', radius: 280, speed: 28, phase: 0, size: 90 },
-  { id: 'o2', src: 'https://images.pexels.com/photos/13869890/pexels-photo-13869890.jpeg?auto=compress&cs=tinysrgb&w=200', label: 'Temaki', radius: 320, speed: 35, phase: 1.2, size: 80 },
-  { id: 'o3', src: 'https://images.pexels.com/photos/5208237/pexels-photo-5208237.jpeg?auto=compress&cs=tinysrgb&w=200', label: 'Maki', radius: 250, speed: 24, phase: 2.5, size: 70 },
-  { id: 'o4', src: 'https://images.pexels.com/photos/4725578/pexels-photo-4725578.jpeg?auto=compress&cs=tinysrgb&w=200', label: 'California', radius: 340, speed: 40, phase: 3.8, size: 85 },
-  { id: 'o5', src: 'https://images.pexels.com/photos/6531075/pexels-photo-6531075.jpeg?auto=compress&cs=tinysrgb&w=200', label: 'Futomaki', radius: 300, speed: 32, phase: 5.0, size: 75 },
-  { id: 'o6', src: 'https://images.pexels.com/photos/19639299/pexels-photo-19639299.jpeg?auto=compress&cs=tinysrgb&w=200', label: 'Sashimi', radius: 270, speed: 26, phase: 0.7, size: 65 },
+  { id: 'o1', src: 'https://images.pexels.com/photos/4725627/pexels-photo-4725627.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 280, speed: 28, phase: 0, size: 90 },
+  { id: 'o2', src: 'https://images.pexels.com/photos/13869890/pexels-photo-13869890.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 320, speed: 35, phase: 1.2, size: 80 },
+  { id: 'o3', src: 'https://images.pexels.com/photos/5208237/pexels-photo-5208237.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 250, speed: 24, phase: 2.5, size: 70 },
+  { id: 'o4', src: 'https://images.pexels.com/photos/4725578/pexels-photo-4725578.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 340, speed: 40, phase: 3.8, size: 85 },
+  { id: 'o5', src: 'https://images.pexels.com/photos/6531075/pexels-photo-6531075.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 300, speed: 32, phase: 5.0, size: 75 },
+  { id: 'o6', src: 'https://images.pexels.com/photos/19639299/pexels-photo-19639299.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 270, speed: 26, phase: 0.7, size: 65 },
+  { id: 'o7', src: 'https://images.pexels.com/photos/34303198/pexels-photo-34303198.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 360, speed: 38, phase: 2.0, size: 78 },
+  { id: 'o8', src: 'https://images.pexels.com/photos/30776222/pexels-photo-30776222.jpeg?auto=compress&cs=tinysrgb&w=200', radius: 240, speed: 22, phase: 4.2, size: 72 },
 ];
 
 function SteamWisp({ delay, left, scale = 1 }: { delay: number; left: string; scale?: number }) {
@@ -26,11 +28,13 @@ function SteamWisp({ delay, left, scale = 1 }: { delay: number; left: string; sc
 }
 
 export default function Hero() {
+  const { t, dir } = useI18n();
   const sceneRef = useRef<HTMLDivElement>(null);
   const [rotX, setRotX] = useState(-12);
   const [rotY, setRotY] = useState(20);
   const [isDragging, setIsDragging] = useState(false);
   const [autoIdle, setAutoIdle] = useState(true);
+  const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const dragStart = useRef({ x: 0, y: 0, rotX: 0, rotY: 0 });
   const idleAngle = useRef(0);
   const rafRef = useRef<number>(0);
@@ -49,6 +53,17 @@ export default function Hero() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [autoIdle, isDragging]);
 
+  // Parallax mouse tracking
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      setParallax({ x: (e.clientX - cx) / cx, y: (e.clientY - cy) / cy });
+    };
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     setIsDragging(true);
     setAutoIdle(false);
@@ -65,7 +80,6 @@ export default function Hero() {
 
   const onPointerUp = useCallback(() => {
     setIsDragging(false);
-    // Resume idle after 3s
     setTimeout(() => setAutoIdle(true), 3000);
   }, []);
 
@@ -73,7 +87,7 @@ export default function Hero() {
   const [orbitTick, setOrbitTick] = useState(0);
   useEffect(() => {
     let raf: number;
-    const tick = () => { setOrbitTick(t => t + 1); raf = requestAnimationFrame(tick); };
+    const tick = () => { setOrbitTick(v => v + 1); raf = requestAnimationFrame(tick); };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, []);
@@ -84,10 +98,10 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-sumi-950 via-sumi-900 to-sumi-950" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,98,44,0.08)_0%,transparent_60%)]" />
 
-      {/* Flickering lantern glows in corners */}
-      <div className="absolute left-[8%] top-[15%] h-40 w-40 rounded-full bg-shu-500/20 blur-3xl animate-lantern-flicker" />
-      <div className="absolute right-[10%] top-[20%] h-32 w-32 rounded-full bg-shu-500/15 blur-3xl animate-lantern-flicker" style={{ animationDelay: '1.5s' }} />
-      <div className="absolute left-[15%] bottom-[20%] h-36 w-36 rounded-full bg-kin-400/10 blur-3xl animate-lantern-flicker" style={{ animationDelay: '0.8s' }} />
+      {/* Flickering lantern glows */}
+      <div className="absolute left-[8%] top-[15%] h-40 w-40 rounded-full bg-shu-500/20 blur-3xl animate-lantern-flicker" style={{ transform: `translate(${parallax.x * 20}px, ${parallax.y * 20}px)` }} />
+      <div className="absolute right-[10%] top-[20%] h-32 w-32 rounded-full bg-shu-500/15 blur-3xl animate-lantern-flicker" style={{ animationDelay: '1.5s', transform: `translate(${parallax.x * -15}px, ${parallax.y * -15}px)` }} />
+      <div className="absolute left-[15%] bottom-[20%] h-36 w-36 rounded-full bg-kin-400/10 blur-3xl animate-lantern-flicker" style={{ animationDelay: '0.8s', transform: `translate(${parallax.x * 25}px, ${parallax.y * 25}px)` }} />
 
       {/* 3D Scene */}
       <div
@@ -99,7 +113,7 @@ export default function Hero() {
         onPointerLeave={onPointerUp}
       >
         {/* Orbiting sushi pieces */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ transform: `translate(calc(-50% + ${parallax.x * 10}px), calc(-50% + ${parallax.y * 10}px))` }}>
           {orbitPieces.map((p) => {
             const angle = (orbitTick * 0.003) / p.speed * 30 + p.phase;
             const x = Math.cos(angle) * p.radius;
@@ -119,7 +133,7 @@ export default function Hero() {
                 <div className="relative animate-float-gentle" style={{ animationDelay: `${p.phase}s` }}>
                   <img
                     src={p.src}
-                    alt={p.label}
+                    alt=""
                     draggable={false}
                     className="rounded-full object-cover shadow-2xl shadow-black/60 ring-1 ring-white/10"
                     style={{ width: `${p.size}px`, height: `${p.size}px` }}
@@ -134,6 +148,7 @@ export default function Hero() {
         {/* Central 3D sushi piece — drag to rotate */}
         <div
           className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+          style={{ transform: `translate(calc(-50% + ${parallax.x * 5}px), calc(-50% + ${parallax.y * 5}px))` }}
         >
           <div
             className="preserve-3d transition-transform duration-100"
@@ -141,10 +156,8 @@ export default function Hero() {
           >
             {/* Main sushi — salmon nigiri */}
             <div className="relative animate-bob">
-              {/* Glow behind */}
               <div className="absolute inset-0 -z-10 scale-150 rounded-full bg-shu-500/15 blur-3xl" />
 
-              {/* The nigiri */}
               <div className="relative h-64 w-64 sm:h-80 sm:w-80">
                 <img
                   src="https://images.pexels.com/photos/4725627/pexels-photo-4725627.jpeg?auto=compress&cs=tinysrgb&w=600"
@@ -170,18 +183,16 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Chopsticks swooping in from the right */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
+        {/* Chopsticks swooping in */}
+        <div className={`absolute top-1/2 -translate-y-1/2 pointer-events-none ${dir === 'rtl' ? 'left-0' : 'right-0'}`}>
           <div className="relative animate-fade-in" style={{ animationDelay: '1.2s', opacity: 0 }}>
-            {/* Chopstick 1 */}
             <div
               className="absolute h-2 w-72 rounded-full bg-gradient-to-r from-kin-700 via-kin-400 to-kin-300 shadow-lg rotate-[-20deg] origin-right"
-              style={{ right: '20px', top: '-8px' }}
+              style={{ [dir === 'rtl' ? 'left' : 'right']: '20px', top: '-8px' } as React.CSSProperties}
             />
-            {/* Chopstick 2 */}
             <div
               className="absolute h-2 w-72 rounded-full bg-gradient-to-r from-kin-700 via-kin-400 to-kin-300 shadow-lg rotate-[-15deg] origin-right"
-              style={{ right: '20px', top: '4px' }}
+              style={{ [dir === 'rtl' ? 'left' : 'right']: '20px', top: '4px' } as React.CSSProperties}
             />
           </div>
         </div>
@@ -190,37 +201,30 @@ export default function Hero() {
       {/* Content overlay */}
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <p className="mb-5 animate-fade-in text-xs uppercase tracking-[0.5em] text-shu-400/90" style={{ animationDelay: '0.3s', opacity: 0 }}>
-          Izakaya Japonaise · Berkane
+          {t('hero.location')}
         </p>
         <h1 className="animate-fade-up font-script text-6xl font-bold leading-tight text-sumi-50 sm:text-7xl md:text-8xl" style={{ textShadow: '0 4px 30px rgba(232,98,44,0.3)' }}>
-          Sushi
-          <span className="block text-shu-500">For You</span>
+          <span className="shimmer-text">{t('hero.title1')}</span>
+          <span className="block text-shu-500">{t('hero.title2')}</span>
         </h1>
         <p className="mx-auto mt-7 max-w-2xl animate-fade-up text-base font-light leading-relaxed text-sumi-200 sm:text-lg" style={{ animationDelay: '0.4s', opacity: 0 }}>
-          Sushi, sashimi, wok et cuisine fusion — une expérience gastronomique
-          où la précision japonaise rencontre les saveurs de l'Asie.
+          {t('hero.subtitle')}
         </p>
         <div className="mt-10 flex animate-fade-up flex-col items-center justify-center gap-4 sm:flex-row" style={{ animationDelay: '0.6s', opacity: 0 }}>
           <a
             href="#menu"
             className="group flex items-center gap-2 rounded-full bg-shu-500 px-8 py-3.5 text-sm font-medium tracking-wide text-white transition-all hover:bg-shu-400 hover:shadow-lg hover:shadow-shu-500/40"
           >
-            Voir le menu
+            {t('hero.cta.menu')}
             <ChevronDown size={16} className="transition-transform group-hover:translate-y-0.5" />
-          </a>
-          <a
-            href="#reservation"
-            className="rounded-full border border-kin-400/50 px-8 py-3.5 text-sm font-light tracking-wide text-kin-200 transition-all hover:border-kin-300 hover:bg-kin-400/10"
-          >
-            Réserver une table
           </a>
         </div>
       </div>
 
       {/* Drag hint */}
       <div className="absolute bottom-24 right-8 hidden animate-fade-in text-right text-xs text-sumi-400 lg:block" style={{ animationDelay: '2s', opacity: 0 }}>
-        <p className="font-light tracking-wide">Faites glisser pour tourner</p>
-        <p className="text-shu-400/60">↻ 360°</p>
+        <p className="font-light tracking-wide">{t('hero.drag')}</p>
+        <p className="text-shu-400/60">{t('hero.drag.hint')}</p>
       </div>
 
       {/* Scroll indicator */}

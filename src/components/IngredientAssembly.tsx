@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReveal } from '../hooks/useReveal';
+import { useI18n } from '../i18n/I18nContext';
 
-const layers = [
-  { id: 'nori', name: 'Nori', description: 'Algue nori grillée', color: 'from-green-900 to-green-950', delay: 0 },
-  { id: 'rice', name: 'Riz', description: 'Riz vinaigré tiède', color: 'from-sumi-50 to-sumi-200', delay: 0.15 },
-  { id: 'wasabi', name: 'Wasabi', description: 'Wasabi frais râpé', color: 'from-green-400 to-green-600', delay: 0.3 },
-  { id: 'salmon', name: 'Saumon', description: 'Saumon frais tranché', color: 'from-shu-400 to-shu-600', delay: 0.45 },
-  { id: 'sesame', name: 'Sésame', description: 'Graines de sésame torréfiées', color: 'from-kin-200 to-kin-400', delay: 0.6 },
+const layerData = [
+  { id: 'nori', nameKey: 'assembly.nori.name', descKey: 'assembly.nori.desc', color: 'from-green-900 to-green-950', delay: 0 },
+  { id: 'rice', nameKey: 'assembly.rice.name', descKey: 'assembly.rice.desc', color: 'from-sumi-50 to-sumi-200', delay: 0.15 },
+  { id: 'wasabi', nameKey: 'assembly.wasabi.name', descKey: 'assembly.wasabi.desc', color: 'from-green-400 to-green-600', delay: 0.3 },
+  { id: 'salmon', nameKey: 'assembly.salmon.name', descKey: 'assembly.salmon.desc', color: 'from-shu-400 to-shu-600', delay: 0.45 },
+  { id: 'sesame', nameKey: 'assembly.sesame.name', descKey: 'assembly.sesame.desc', color: 'from-kin-200 to-kin-400', delay: 0.6 },
 ];
 
 export default function IngredientAssembly() {
+  const { t } = useI18n();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const { ref: headerRef, visible } = useReveal();
+
+  const layers = layerData.map((l) => ({ ...l, name: t(l.nameKey), description: t(l.descKey) }));
 
   useEffect(() => {
     const onScroll = () => {
@@ -38,12 +42,12 @@ export default function IngredientAssembly() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div ref={headerRef} className={`reveal mx-auto max-w-2xl text-center ${visible ? 'is-visible' : ''}`}>
-          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-shu-400/80">L'art du roulé</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-shu-400/80">{t('assembly.eyebrow')}</p>
           <h2 className="font-serif text-4xl font-light text-sumi-50 sm:text-5xl">
-            Chaque <span className="text-shu-500">ingrédient</span> compte
+            {t('assembly.title')}
           </h2>
           <p className="mt-4 text-sm font-light text-sumi-300">
-            Faites défiler pour voir le maki se construire pièce par pièce.
+            {t('assembly.subtitle')}
           </p>
         </div>
 

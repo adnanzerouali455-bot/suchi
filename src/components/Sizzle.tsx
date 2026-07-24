@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { useI18n } from '../i18n/I18nContext';
 
 export default function Sizzle() {
+  const { t } = useI18n();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
 
@@ -133,7 +135,7 @@ export default function Sizzle() {
         {/* Phase text */}
         <div className="absolute bottom-[8%] left-1/2 -translate-x-1/2 text-center">
           <p className="font-script text-2xl text-shu-400/80 transition-opacity duration-300" style={{ opacity: progress > 0.05 && progress < 0.95 ? 0.8 : 0 }}>
-            {progress < 0.3 ? 'Les baguettes se rapprochent...' : progress < 0.5 ? 'On saisit le nigiri' : progress < 0.7 ? 'Un plongeon dans la sauce soja' : 'Savourez...'}
+            {progress < 0.3 ? t('sizzle.phase1') : progress < 0.5 ? t('sizzle.phase2') : progress < 0.7 ? t('sizzle.phase3') : t('sizzle.phase4')}
           </p>
         </div>
       </div>

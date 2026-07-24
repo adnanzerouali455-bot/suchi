@@ -1,18 +1,20 @@
 import { useRef, useState } from 'react';
 import { useReveal } from '../hooks/useReveal';
+import { useI18n } from '../i18n/I18nContext';
 
 const photos = [
-  { src: 'https://images.pexels.com/photos/34690156/pexels-photo-34690156.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Plateau de sushis', span: 'lg:col-span-2 lg:row-span-2', lantern: true },
-  { src: 'https://images.pexels.com/photos/13869899/pexels-photo-13869899.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Création du chef' },
-  { src: 'https://images.pexels.com/photos/4725627/pexels-photo-4725627.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Nigiri de saumon' },
-  { src: 'https://images.pexels.com/photos/37165674/pexels-photo-37165674.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Wok de nouilles' },
-  { src: 'https://images.pexels.com/photos/32393811/pexels-photo-32393811.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Bouchées vapeur' },
-  { src: 'https://images.pexels.com/photos/8982387/pexels-photo-8982387.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Soupe miso' },
-  { src: 'https://images.pexels.com/photos/19639299/pexels-photo-19639299.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Sashimi' },
-  { src: 'https://images.pexels.com/photos/7416286/pexels-photo-7416286.jpeg?auto=compress&cs=tinysrgb&w=600', alt: 'Salade wakame', span: 'lg:col-span-2' },
+  { src: 'https://images.pexels.com/photos/34690156/pexels-photo-34690156.jpeg?auto=compress&cs=tinysrgb&w=800', altKey: 'gallery.plateau', span: 'lg:col-span-2 lg:row-span-2', lantern: true },
+  { src: 'https://images.pexels.com/photos/13869899/pexels-photo-13869899.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.creation' },
+  { src: 'https://images.pexels.com/photos/4725627/pexels-photo-4725627.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.nigiri' },
+  { src: 'https://images.pexels.com/photos/37165674/pexels-photo-37165674.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.wok' },
+  { src: 'https://images.pexels.com/photos/32393811/pexels-photo-32393811.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.vapeur' },
+  { src: 'https://images.pexels.com/photos/8982387/pexels-photo-8982387.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.soupe' },
+  { src: 'https://images.pexels.com/photos/19639299/pexels-photo-19639299.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.sashimi' },
+  { src: 'https://images.pexels.com/photos/7416286/pexels-photo-7416286.jpeg?auto=compress&cs=tinysrgb&w=600', altKey: 'gallery.wakame', span: 'lg:col-span-2' },
 ];
 
-function GalleryItem({ src, alt, span, index, lantern }: { src: string; alt: string; span?: string; index: number; lantern?: boolean }) {
+function GalleryItem({ src, altKey, span, index, lantern }: { src: string; altKey: string; span?: string; index: number; lantern?: boolean }) {
+  const { t } = useI18n();
   const { ref, visible } = useReveal();
   const itemRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
@@ -44,7 +46,7 @@ function GalleryItem({ src, alt, span, index, lantern }: { src: string; alt: str
       >
         <img
           src={src}
-          alt={alt}
+          alt={t(altKey)}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
@@ -54,7 +56,7 @@ function GalleryItem({ src, alt, span, index, lantern }: { src: string; alt: str
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-sumi-950/80 via-sumi-950/20 to-transparent opacity-70 transition-opacity group-hover:opacity-40" />
         <div className="absolute bottom-0 left-0 p-4 opacity-0 transition-all duration-300 group-hover:opacity-100" style={{ transform: 'translateZ(30px)' }}>
-          <p className="font-serif text-sm text-sumi-50">{alt}</p>
+          <p className="font-serif text-sm text-sumi-50">{t(altKey)}</p>
         </div>
         {/* Gloss sweep */}
         <div className="absolute inset-0 overflow-hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -66,6 +68,7 @@ function GalleryItem({ src, alt, span, index, lantern }: { src: string; alt: str
 }
 
 export default function Gallery() {
+  const { t } = useI18n();
   const { ref, visible } = useReveal();
 
   return (
@@ -77,12 +80,12 @@ export default function Gallery() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div ref={ref} className={`reveal mx-auto max-w-2xl text-center ${visible ? 'is-visible' : ''}`}>
-          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-shu-400/80">Galerie</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-shu-400/80">{t('gallery.eyebrow')}</p>
           <h2 className="font-serif text-4xl font-light text-sumi-50 sm:text-5xl">
-            L'<span className="text-shu-500">ambiance</span> & les plats
+            {t('gallery.title')}
           </h2>
           <p className="mt-4 text-sm font-light text-sumi-300">
-            Un aperçu de l'expérience Sushi For You — entre assiettes soignées et atmosphère zen.
+            {t('gallery.subtitle')}
           </p>
         </div>
 

@@ -2,16 +2,18 @@ import { useMemo, useState, useRef } from 'react';
 import { Flame, Leaf, Star, Sparkles, ChefHat } from 'lucide-react';
 import { categories, dishes, type Dish, type DishTag } from '../data/menu';
 import { useReveal } from '../hooks/useReveal';
+import { useI18n } from '../i18n/I18nContext';
 
-const tagConfig: Record<DishTag, { icon: typeof Flame; label: string; class: string }> = {
-  spicy: { icon: Flame, label: 'Épicé', class: 'text-shu-300 bg-shu-950/60 border-shu-700/40' },
-  vegetarian: { icon: Leaf, label: 'Végétarien', class: 'text-green-400 bg-green-950/40 border-green-800/40' },
-  popular: { icon: Star, label: 'Populaire', class: 'text-shu-300 bg-shu-950/50 border-shu-600/40' },
-  new: { icon: Sparkles, label: 'Nouveau', class: 'text-blue-300 bg-blue-950/40 border-blue-800/40' },
-  chef: { icon: ChefHat, label: 'Chef', class: 'text-kin-300 bg-kin-950/40 border-kin-700/40' },
+const tagConfig: Record<DishTag, { icon: typeof Flame; key: string; class: string }> = {
+  spicy: { icon: Flame, key: 'menu.tag.spicy', class: 'text-shu-300 bg-shu-950/60 border-shu-700/40' },
+  vegetarian: { icon: Leaf, key: 'menu.tag.vegetarian', class: 'text-green-400 bg-green-950/40 border-green-800/40' },
+  popular: { icon: Star, key: 'menu.tag.popular', class: 'text-shu-300 bg-shu-950/50 border-shu-600/40' },
+  new: { icon: Sparkles, key: 'menu.tag.new', class: 'text-blue-300 bg-blue-950/40 border-blue-800/40' },
+  chef: { icon: ChefHat, key: 'menu.tag.chef', class: 'text-kin-300 bg-kin-950/40 border-kin-700/40' },
 };
 
 function DishCard({ dish, index }: { dish: Dish; index: number }) {
+  const { t } = useI18n();
   const { ref, visible } = useReveal();
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
@@ -58,13 +60,13 @@ function DishCard({ dish, index }: { dish: Dish; index: number }) {
           {/* Tags */}
           {dish.tags && dish.tags.length > 0 && (
             <div className="absolute left-3 top-3 flex flex-wrap gap-1.5" style={{ transform: 'translateZ(30px)' }}>
-              {dish.tags.map((t) => {
-                const cfg = tagConfig[t];
+              {dish.tags.map((tag) => {
+                const cfg = tagConfig[tag];
                 const Icon = cfg.icon;
                 return (
-                  <span key={t} className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium backdrop-blur-sm ${cfg.class}`}>
+                  <span key={tag} className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium backdrop-blur-sm ${cfg.class}`}>
                     <Icon size={10} />
-                    {cfg.label}
+                    {t(cfg.key)}
                   </span>
                 );
               })}
@@ -106,6 +108,7 @@ function DishCard({ dish, index }: { dish: Dish; index: number }) {
 }
 
 export default function MenuSection() {
+  const { t } = useI18n();
   const [active, setActive] = useState(categories[0].id);
   const { ref, visible } = useReveal();
 
@@ -115,6 +118,7 @@ export default function MenuSection() {
   );
 
   const currentCat = categories.find((c) => c.id === active)!;
+  const catSubKey = `menu.${currentCat.id}.sub`;
 
   return (
     <section id="menu" className="relative bg-sumi-900 py-24 lg:py-32">
@@ -125,12 +129,12 @@ export default function MenuSection() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div ref={ref} className={`reveal mx-auto max-w-2xl text-center ${visible ? 'is-visible' : ''}`}>
-          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-shu-400/80">Notre Carte</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-shu-400/80">{t('menu.eyebrow')}</p>
           <h2 className="font-serif text-4xl font-light text-sumi-50 sm:text-5xl">
-            Le <span className="text-shu-500">Menu</span>
+            {t('menu.title')}
           </h2>
           <p className="mt-4 text-sm font-light text-sumi-300">
-            Explorez nos créations par catégorie — du plateau festif au sashimi le plus pur.
+            {t('menu.subtitle')}
           </p>
         </div>
 
@@ -146,14 +150,14 @@ export default function MenuSection() {
                   : 'border border-sumi-700/50 text-sumi-300 hover:border-shu-400/50 hover:text-shu-300'
               }`}
             >
-              {cat.label}
+              {t(`menu.${cat.id}`)}
             </button>
           ))}
         </div>
 
         {/* Subtitle */}
         <p className="mt-6 text-center text-xs uppercase tracking-[0.3em] text-sumi-500">
-          {currentCat.subtitle}
+          {t(catSubKey)}
         </p>
 
         {/* Dishes grid */}
@@ -161,21 +165,6 @@ export default function MenuSection() {
           {filtered.map((dish, i) => (
             <DishCard key={dish.id} dish={dish} index={i} />
           ))}
-        </div>
-
-        {/* WhatsApp order CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-sm font-light text-sumi-300">
-            Envie de commander ? Passez directement par WhatsApp.
-          </p>
-          <a
-            href="https://wa.me/212600000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-green-600 px-7 py-3 text-sm font-medium text-white transition-all hover:bg-green-500 hover:shadow-lg hover:shadow-green-600/30"
-          >
-            Commander sur WhatsApp
-          </a>
         </div>
       </div>
     </section>

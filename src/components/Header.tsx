@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Languages } from 'lucide-react';
+import { useI18n } from '../i18n/I18nContext';
 
 const links = [
-  { href: '#accueil', label: 'Accueil' },
-  { href: '#menu', label: 'Menu' },
-  { href: '#galerie', label: 'Galerie' },
-  { href: '#reservation', label: 'Réservation' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#accueil', key: 'nav.home' },
+  { href: '#menu', key: 'nav.menu' },
+  { href: '#galerie', key: 'nav.gallery' },
+  { href: '#apropos', key: 'nav.about' },
+  { href: '#contact', key: 'nav.contact' },
 ];
 
 function Logo() {
+  const { t } = useI18n();
   return (
     <div className="flex items-center gap-3">
       {/* Chopsticks holding a sushi roll logo */}
       <div className="relative flex h-11 w-11 items-center justify-center rounded-full border border-shu-500/50 bg-sumi-900 overflow-hidden">
         {/* Sushi roll (cross-section) */}
         <div className="relative h-6 w-6 rounded-full bg-gradient-to-br from-sumi-100 to-sumi-200 shadow-inner">
-          {/* Nori ring */}
           <div className="absolute inset-0 rounded-full ring-2 ring-green-900" />
-          {/* Salmon center */}
           <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-shu-400 to-shu-600">
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/40 to-transparent" />
           </div>
@@ -33,7 +33,7 @@ function Logo() {
           Sushi For You
         </span>
         <span className="text-[10px] uppercase tracking-[0.3em] text-shu-400/80">
-          Izakaya Japonaise
+          {t('header.tagline')}
         </span>
       </div>
     </div>
@@ -41,6 +41,7 @@ function Logo() {
 }
 
 export default function Header() {
+  const { lang, setLang, t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -50,6 +51,8 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const toggleLang = () => setLang(lang === 'fr' ? 'ar' : 'fr');
 
   return (
     <header
@@ -70,38 +73,32 @@ export default function Header() {
               href={l.href}
               className="group relative text-sm font-light tracking-wide text-sumi-100 transition-colors hover:text-shu-400"
             >
-              {l.label}
+              {t(l.key)}
               <span className="absolute -bottom-1 left-0 h-px w-0 bg-shu-500 transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href="#reservation"
-            className="rounded-full border border-shu-400/50 px-5 py-2 text-sm font-light tracking-wide text-shu-200 transition-all hover:border-shu-300 hover:bg-shu-500/10"
+        {/* Language toggle + mobile toggle */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-2 rounded-full border border-kin-400/40 px-4 py-2 text-sm font-light tracking-wide text-kin-200 transition-all hover:border-kin-300 hover:bg-kin-400/10"
+            aria-label="Switch language"
           >
-            Réserver
-          </a>
-          <a
-            href="https://wa.me/212600000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-full bg-green-600 px-5 py-2 text-sm font-medium text-white transition-all hover:bg-green-500"
-          >
-            <Phone size={15} />
-            Commander
-          </a>
-        </div>
+            <Languages size={16} />
+            {lang === 'fr' ? 'العربية' : 'Français'}
+          </button>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="flex h-10 w-10 items-center justify-center text-sumi-50 lg:hidden"
-          aria-label="Menu"
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex h-10 w-10 items-center justify-center text-sumi-50 lg:hidden"
+            aria-label="Menu"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -118,16 +115,9 @@ export default function Header() {
               onClick={() => setOpen(false)}
               className="rounded-lg px-4 py-3 text-sm font-light text-sumi-100 transition-colors hover:bg-sumi-800 hover:text-shu-400"
             >
-              {l.label}
+              {t(l.key)}
             </a>
           ))}
-          <a
-            href="#reservation"
-            onClick={() => setOpen(false)}
-            className="mt-2 rounded-lg bg-shu-500 px-4 py-3 text-center text-sm font-medium text-white"
-          >
-            Réserver une table
-          </a>
         </nav>
       </div>
     </header>

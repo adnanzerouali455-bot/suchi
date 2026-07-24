@@ -1,12 +1,14 @@
 import { useReveal } from '../hooks/useReveal';
+import { useI18n } from '../i18n/I18nContext';
 
 const stats = [
-  { value: '50+', label: 'Pièces par plateau' },
-  { value: '100%', label: 'Fait maison' },
-  { value: '5★', label: 'Avis clients' },
+  { valueKey: 'about.stat1.value', labelKey: 'about.stat1.label' },
+  { valueKey: 'about.stat2.value', labelKey: 'about.stat2.label' },
+  { valueKey: 'about.stat3.value', labelKey: 'about.stat3.label' },
 ];
 
 export default function About() {
+  const { t } = useI18n();
   const { ref, visible } = useReveal();
 
   return (
@@ -18,11 +20,11 @@ export default function About() {
 
       {/* Floating sushi */}
       <div className="pointer-events-none absolute right-[15%] top-[20%] hidden lg:block">
-        <div className="animate-float-gentle">
+        <div className="animate-drift">
           <img
             src="https://images.pexels.com/photos/13869890/pexels-photo-13869890.jpeg?auto=compress&cs=tinysrgb&w=200"
             alt=""
-            className="h-24 w-24 rounded-full object-cover shadow-2xl ring-1 ring-white/10"
+            className="h-24 w-24 rounded-full object-cover shadow-2xl ring-1 ring-white/10 animate-glow-pulse"
           />
         </div>
       </div>
@@ -45,35 +47,30 @@ export default function About() {
             </div>
             <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-shu-500/30 bg-sumi-900/90 p-6 backdrop-blur-sm sm:block">
               <p className="font-serif text-3xl text-shu-400">寿司</p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-sumi-300">L'art du sushi</p>
+              <p className="mt-1 text-xs uppercase tracking-widest text-sumi-300">{t('about.kanji')}</p>
             </div>
           </div>
 
           {/* Text */}
           <div>
-            <p className="mb-4 text-xs uppercase tracking-[0.4em] text-shu-400/80">À propos</p>
+            <p className="mb-4 text-xs uppercase tracking-[0.4em] text-shu-400/80">{t('about.eyebrow')}</p>
             <h2 className="font-serif text-4xl font-light leading-tight text-sumi-50 sm:text-5xl">
-              Une fusion entre
-              <span className="text-shu-500"> tradition japonaise</span> et
-              <span className="text-kin-300"> saveurs asiatiques</span>
+              {t('about.title1')}
+              <span className="text-shu-500"> {t('about.title2')}</span>{' '}
+              {t('about.title3')}
             </h2>
             <p className="mt-6 text-base font-light leading-relaxed text-sumi-200">
-              Chez Sushi For You, chaque plat est une invitation au voyage. Notre chef
-              façonne des sushis avec une précision d'orfèvre, tandis que le wok
-              chante pour des plats sautés minute. Nous marions l'élégance japonaise,
-              l'exubérance thaïlandaise et la richesse de la cuisine asiatique dans
-              une expérience gustative unique à Berkane.
+              {t('about.p1')}
             </p>
             <p className="mt-4 text-base font-light leading-relaxed text-sumi-300">
-              Des produits frais, sélectionnés chaque matin, pour vous offrir le
-              meilleur de l'Asie dans une ambiance zen et raffinée.
+              {t('about.p2')}
             </p>
 
             <div className="mt-10 grid grid-cols-3 gap-6">
               {stats.map((s) => (
-                <div key={s.label} className="border-l border-shu-500/30 pl-4">
-                  <p className="font-serif text-3xl text-shu-400">{s.value}</p>
-                  <p className="mt-1 text-xs uppercase tracking-wider text-sumi-400">{s.label}</p>
+                <div key={s.labelKey} className="border-l border-shu-500/30 pl-4">
+                  <p className="font-serif text-3xl text-shu-400">{t(s.valueKey)}</p>
+                  <p className="mt-1 text-xs uppercase tracking-wider text-sumi-400">{t(s.labelKey)}</p>
                 </div>
               ))}
             </div>
