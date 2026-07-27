@@ -36,7 +36,7 @@ export default function IngredientAssembly() {
   const visibleLayers = Math.min(layerCount, Math.floor(progress * layerCount * 1.2));
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-gradient-to-b from-sumi-950 to-sumi-900 py-24 lg:py-32">
+    <section ref={sectionRef} className="relative overflow-hidden bg-gradient-to-b from-sumi-950 to-sumi-900 py-16 lg:py-20">
       {/* Ambient glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,rgba(232,98,44,0.05)_0%,transparent_60%)]" />
 

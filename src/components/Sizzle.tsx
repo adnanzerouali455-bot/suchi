@@ -53,7 +53,7 @@ export default function Sizzle() {
     : 0;
 
   return (
-    <section ref={sectionRef} className="relative flex h-[200vh] items-center justify-center overflow-hidden bg-sumi-950">
+    <section ref={sectionRef} className="relative flex h-[130vh] items-center justify-center overflow-hidden bg-sumi-950">
       {/* Sticky viewport */}
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
         {/* Ambient glow */}

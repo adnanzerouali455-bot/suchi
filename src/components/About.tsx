@@ -12,7 +12,7 @@ export default function About() {
   const { ref, visible } = useReveal();
 
   return (
-    <section id="apropos" className="relative overflow-hidden bg-sumi-900 py-24 lg:py-32">
+    <section id="apropos" className="relative overflow-hidden bg-sumi-900 py-16 lg:py-24">
       {/* Decorative kanji */}
       <div className="pointer-events-none absolute -right-10 top-10 select-none font-serif text-[20rem] leading-none text-sumi-800/40">
         和
